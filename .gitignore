@@ -1,0 +1,3 @@
+utils/*.o
+src/*.o
+*.md
