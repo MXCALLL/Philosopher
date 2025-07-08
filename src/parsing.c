@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muidbell <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 07:21:52 by muidbell          #+#    #+#             */
-/*   Updated: 2025/06/11 10:00:36 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/05 15:55:46 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,12 @@ int	check_posoverflow(int ac, char **av)
 	{
 		if (ft_atoi(av[i]) == -2)
 		{
-			write(1, "Error: Numbers Must be Positive\n", 25);
+			write(1, "Error: Numbers Must be Positive\n", 32);
 			return (1);
 		}
 		else if (ft_atoi(av[i]) == -1)
 		{
-			write(1, "Error: Numbers Must be must between 1 to 2147483647\n", 44);
+			write(1, "Error: Numbers Must be must between 1 to 2147483647\n", 52);
 			return (1);
 		}
 		else if (ft_error(ft_atoi(av[i]), i))
