@@ -1,31 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   philos_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/11 07:02:37 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/07 17:22:26 by muidbell         ###   ########.fr       */
+/*   Created: 2025/07/07 17:07:13 by muidbell          #+#    #+#             */
+/*   Updated: 2025/07/08 12:27:57 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
-#include <stdio.h>
 
-int main(int ac, char **av)
+void	*philo_simulation(void *data)
 {
-	t_philos	*philos;
-	t_table		*table;
-	// t_philos	*monitor;
+	t_philos *philo;
+	philo = (t_philos *)data;
 
-	table = NULL;
-	if (filter_input(ac, av))
-		return (1);
-	table = init_table(table, ac, av);
-	philos = init_philos(table);
-
-	printf("start time in ms: %ld\n", table->start_time_ms);
-	printf("id: %ld\n", philos[0].id);
-	return (0);
+	pthread_mutex_lock(&philo->table->print_mutex);
+	printf("id= %zu\n", philo->id);
+	pthread_mutex_unlock(&philo->table->print_mutex);
+	return (NULL);
 }
