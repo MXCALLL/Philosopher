@@ -6,7 +6,7 @@
 /*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 20:36:58 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/08 12:41:05 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/09 19:09:29 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_table	*init_table(t_table *table, int ac, char **av)
 	table->time_to_die = ft_atoi(av[2]);
 	table->time_to_eat = ft_atoi(av[3]);
 	table->time_to_sleep = ft_atoi(av[4]);
-	if (ac == 7)
+	if (ac == 6)
 		table->meals_per_philo = ft_atoi(av[5]);
 	if (!table->num_philos || !table->time_to_die
 		|| !table->time_to_eat || !table->time_to_sleep)
@@ -47,6 +47,8 @@ t_table	*init_table(t_table *table, int ac, char **av)
 	while(i < table->num_philos)
 		pthread_mutex_init(&table->forks[i++], NULL);
 	pthread_mutex_init(&table->print_mutex, NULL);
+	pthread_mutex_init(&table->death_mutex, NULL);
+	pthread_mutex_init(&table->meal_mutex, NULL);
 	table->start_time_ms = get_current_time();
 	return (table);
 }
@@ -54,13 +56,13 @@ t_table	*init_table(t_table *table, int ac, char **av)
 t_philos	*init_philos(t_table *table)
 {
 	t_philos	*philo;
+	pthread_t	monitor;
 	size_t		i;
 	int			status;
 
 	philo = ft_calloc(table->num_philos, sizeof(t_philos));
 	if (!philo)
 		return(ft_putstr("Malloc fails"), NULL);
-
 	i = 0;
 	while (i < table->num_philos)
 	{
@@ -72,16 +74,18 @@ t_philos	*init_philos(t_table *table)
 		philo[i].table = table;
 		status = pthread_create(&philo[i].thread, NULL, philo_simulation, &philo[i]);
 		if (status != 0)
-			return (ft_putstr("failed creating threads"), NULL);
+			return (ft_putstr("failed creating threads"), free(philo), NULL);
 		i++;
 	}
-
 	i = 0;
 	while (i < table->num_philos)
-	{
-		pthread_join(philo[i].thread, NULL);
-		i++;
-	}
+		if (pthread_join(philo[i++].thread, NULL) != 0)
+			return (ft_putstr("pthread join failed"), NULL);
 
+	status = pthread_create(monitor, NULL, monitor_routine, table);
+	if (status != 0)
+		return (ft_putstr("failed creating threads"), free(philo), NULL);
+	if (pthread_join(monitor, NULL) != 0)
+			return (ft_putstr("monitor join failed"), NULL);
 	return (philo);
 }

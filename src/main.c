@@ -6,7 +6,7 @@
 /*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 07:02:37 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/07 17:22:26 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/09 15:36:51 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,11 @@ int main(int ac, char **av)
 	if (filter_input(ac, av))
 		return (1);
 	table = init_table(table, ac, av);
+	if (!table)
+		return (1);
 	philos = init_philos(table);
+	if (!philos)
+		return (1);
 
-	printf("start time in ms: %ld\n", table->start_time_ms);
-	printf("id: %ld\n", philos[0].id);
 	return (0);
 }

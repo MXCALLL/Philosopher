@@ -6,7 +6,7 @@
 /*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 06:57:56 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/08 12:28:03 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/09 18:42:19 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 #include <limits.h>
 #include <pthread.h>
 #include <sys/time.h>
-
 
 typedef struct s_table
 {
@@ -63,5 +62,14 @@ int	filter_input(int ac, char **av);
 t_table		*init_table(t_table *table, int ac, char **av);
 t_philos	*init_philos(t_table *table);
 void		*philo_simulation(void *data);
+void		philo_routine(t_philos *philo);
+long		get_current_time(void);
+void		taking_fork(t_philos *philo);
+void		display_log(t_philos *philo, char *str);
+void		eating(t_philos *philo);
+void		ft_usleep(size_t ms);
+void		sleeping(t_philos *philo);
+void		thinking(t_philos *philo);
+void		*monitor_routine(void *data);
 
 #endif

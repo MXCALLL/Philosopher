@@ -6,7 +6,7 @@
 /*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 07:21:52 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/05 15:55:46 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/09 18:02:57 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	check_posoverflow(int ac, char **av)
 
 int	filter_input(int ac, char **av)
 {
-	if (ac != 6 && ac != 7)
+	if (ac != 5 && ac != 6)
 	{
 		ft_putstr("Error: nbr of args is not enough");
 		return (1);
