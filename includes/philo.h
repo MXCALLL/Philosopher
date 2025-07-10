@@ -6,19 +6,19 @@
 /*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 06:57:56 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/09 18:42:19 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/10 19:40:10 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <limits.h>
-#include <pthread.h>
-#include <sys/time.h>
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <limits.h>
+# include <pthread.h>
+# include <sys/time.h>
 
 typedef struct s_table
 {
@@ -48,17 +48,14 @@ typedef struct s_philos
 	t_table				*table;
 }	t_philos;
 
-
 // helper functions
-int		ft_atoi(const char *str);
-void	ft_putstr(char *s);
-char	*ft_strdup(const char *s);
-void	*ft_calloc(size_t count, size_t size);
-
-// parsing functions
-int	filter_input(int ac, char **av);
+int			ft_atoi(const char *str);
+void		ft_putstr(char *s);
+char		*ft_strdup(const char *s);
+void		*ft_calloc(size_t count, size_t size);
 
 // src functions
+int			filter_input(int ac, char **av);
 t_table		*init_table(t_table *table, int ac, char **av);
 t_philos	*init_philos(t_table *table);
 void		*philo_simulation(void *data);
@@ -71,5 +68,6 @@ void		ft_usleep(size_t ms);
 void		sleeping(t_philos *philo);
 void		thinking(t_philos *philo);
 void		*monitor_routine(void *data);
+void		cleanup(t_table *table, t_philos *philos);
 
 #endif

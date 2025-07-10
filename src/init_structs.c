@@ -6,7 +6,7 @@
 /*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 20:36:58 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/09 19:09:29 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/10 19:41:58 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_table	*init_table(t_table *table, int ac, char **av)
 	return (table);
 }
 
-t_philos	*init_philos(t_table *table)
+t_philos	*init_philos_monitor(t_table *table)
 {
 	t_philos	*philo;
 	pthread_t	monitor;
@@ -63,6 +63,7 @@ t_philos	*init_philos(t_table *table)
 	philo = ft_calloc(table->num_philos, sizeof(t_philos));
 	if (!philo)
 		return(ft_putstr("Malloc fails"), NULL);
+	table->philos = philo;
 	i = 0;
 	while (i < table->num_philos)
 	{
@@ -77,15 +78,16 @@ t_philos	*init_philos(t_table *table)
 			return (ft_putstr("failed creating threads"), free(philo), NULL);
 		i++;
 	}
+
+	status = pthread_create(&monitor, NULL, monitor_routine, table);
+	if (status != 0)
+		return (ft_putstr("failed creating threads"), free(philo), NULL);
+
+	if (pthread_join(monitor, NULL) != 0)
+			return (ft_putstr("monitor join failed"), NULL);
 	i = 0;
 	while (i < table->num_philos)
 		if (pthread_join(philo[i++].thread, NULL) != 0)
 			return (ft_putstr("pthread join failed"), NULL);
-
-	status = pthread_create(monitor, NULL, monitor_routine, table);
-	if (status != 0)
-		return (ft_putstr("failed creating threads"), free(philo), NULL);
-	if (pthread_join(monitor, NULL) != 0)
-			return (ft_putstr("monitor join failed"), NULL);
 	return (philo);
 }

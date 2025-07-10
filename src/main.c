@@ -6,7 +6,7 @@
 /*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 07:02:37 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/09 15:36:51 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/10 19:41:02 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int main(int ac, char **av)
 {
 	t_philos	*philos;
 	t_table		*table;
-	// t_philos	*monitor;
 
 	table = NULL;
 	if (filter_input(ac, av))
@@ -25,9 +24,10 @@ int main(int ac, char **av)
 	table = init_table(table, ac, av);
 	if (!table)
 		return (1);
-	philos = init_philos(table);
+	philos = init_philos_monitor(table);
 	if (!philos)
 		return (1);
 
+	cleanup(table, philos);
 	return (0);
 }
