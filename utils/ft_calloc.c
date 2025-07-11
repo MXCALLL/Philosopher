@@ -6,7 +6,7 @@
 /*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:32:39 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/07 11:36:07 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/11 17:25:22 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	*ft_calloc(size_t count, size_t size)
 	ptr = malloc(totalby);
 	if (ptr == NULL)
 		return (NULL);
-
 	ft_bzero(ptr, totalby);
 	return (ptr);
 }

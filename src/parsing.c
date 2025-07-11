@@ -6,7 +6,7 @@
 /*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 07:21:52 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/09 18:02:57 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/11 17:26:07 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ int	ft_error(int nbr, int index)
 
 int	check_posoverflow(int ac, char **av)
 {
-	int		i;
+	int	i;
 
 	i = 0;
-	while(i < ac)
+	while (i < ac)
 	{
 		if (ft_atoi(av[i]) == -2)
 		{
@@ -55,7 +55,8 @@ int	check_posoverflow(int ac, char **av)
 		}
 		else if (ft_atoi(av[i]) == -1)
 		{
-			write(1, "Error: Numbers Must be must between 1 to 2147483647\n", 52);
+			write(1, "Error: Numbers Must be must between 1 to 2147483647\n",
+				52);
 			return (1);
 		}
 		else if (ft_error(ft_atoi(av[i]), i))

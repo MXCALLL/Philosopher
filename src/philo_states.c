@@ -6,7 +6,7 @@
 /*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 10:13:12 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/09 19:01:19 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/11 17:25:40 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	eating(t_philos *philo)
 	philo->last_meal_timing = get_current_time();
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->table->meal_mutex);
-
 	ft_usleep(philo->table->time_to_eat);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
@@ -45,12 +44,22 @@ void	eating(t_philos *philo)
 
 void	sleeping(t_philos *philo)
 {
+	long	curr;
+
+	curr = get_current_time();
 	display_log(philo, "is sleeping");
-	ft_usleep(philo->table->time_to_sleep);
+	pthread_mutex_lock(&philo->table->death_mutex);
+	while (!philo->table->someone_died)
+	{
+		pthread_mutex_unlock(&philo->table->death_mutex);
+		if ((get_current_time() - curr) >= (long)philo->table->time_to_sleep)
+			break ;
+		usleep(50);
+	}
+	pthread_mutex_unlock(&philo->table->death_mutex);
 }
 
 void	thinking(t_philos *philo)
 {
 	display_log(philo, "is thinking");
 }
-
