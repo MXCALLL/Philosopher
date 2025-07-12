@@ -6,7 +6,7 @@
 /*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 16:02:03 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/11 16:07:15 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/12 16:53:28 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ void	*monitor_routine(void *data)
 	table = (t_table *)data;
 	while (1)
 	{
-		if (check_philo_death(table))
-			return (NULL);
 		if (check_nbr_of_meals(table))
+			return (NULL);
+		if (check_philo_death(table))
 			return (NULL);
 		ft_usleep(1);
 	}
@@ -73,7 +73,7 @@ int	check_nbr_of_meals(t_table *table)
 			i++;
 		}
 		if (satisfied_philos == table->num_philos)
-			return (1);
+			return (table->all_ate_enough = 1, 1);
 	}
 	return (0);
 }

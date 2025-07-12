@@ -6,7 +6,7 @@
 /*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 20:36:58 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/11 17:23:54 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/12 16:19:34 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int	init_mutex_table(t_table *table)
 		return (1);
 	if (pthread_mutex_init(&table->meal_mutex, NULL))
 		return (1);
+	if (pthread_mutex_init(&table->eat_enough, NULL))
+		return (1);
 	return (0);
 }
 
@@ -47,6 +49,7 @@ t_table	*init_table(t_table *table, int ac, char **av)
 		return (ft_putstr("Malloc fails"), NULL);
 	table->meals_per_philo = 0;
 	table->someone_died = 0;
+	table->all_ate_enough = 0;
 	table->num_philos = ft_atoi(av[1]);
 	table->time_to_die = ft_atoi(av[2]);
 	table->time_to_eat = ft_atoi(av[3]);

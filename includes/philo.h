@@ -6,7 +6,7 @@
 /*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 06:57:56 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/11 17:02:02 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/12 16:19:10 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_table
 	pthread_mutex_t		print_mutex;
 	pthread_mutex_t		death_mutex;
 	pthread_mutex_t		meal_mutex;
+	pthread_mutex_t		eat_enough;
 	int					someone_died;
 	int					all_ate_enough;
 	long				start_time_ms;

@@ -6,7 +6,7 @@
 /*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 17:07:13 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/11 17:21:14 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/12 16:52:42 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,22 @@ void	*philo_simulation(void *data)
 	t_philos	*philo;
 
 	philo = (t_philos *)data;
-	if (philo->id % 2)
+	if (philo->id % 2 == 1)
 		ft_usleep(philo->table->time_to_eat);
 	philo_routine(philo);
 	return (NULL);
+}
+
+int	check_meals(t_table *table)
+{
+	pthread_mutex_lock(&table->eat_enough);
+	if (table->all_ate_enough)
+	{
+		pthread_mutex_unlock(&table->eat_enough);
+		return (1);
+	}
+	pthread_mutex_unlock(&table->eat_enough);
+	return (0);
 }
 
 void	philo_routine(t_philos *philo)
@@ -63,6 +75,8 @@ void	philo_routine(t_philos *philo)
 			return ;
 		taking_fork(philo);
 		eating(philo);
+		if (check_meals(philo->table))
+			break ;
 		sleeping(philo);
 		thinking(philo);
 	}
