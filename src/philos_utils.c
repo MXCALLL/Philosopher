@@ -6,7 +6,7 @@
 /*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 17:07:13 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/12 16:52:42 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/13 20:25:12 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,6 @@ void	ft_usleep(size_t ms)
 	current = get_current_time();
 	while (get_current_time() - current < ms)
 		usleep(500);
-}
-
-void	display_log(t_philos *philo, char *str)
-{
-	pthread_mutex_lock(&philo->table->death_mutex);
-	if (philo->table->someone_died)
-	{
-		pthread_mutex_unlock(&philo->table->death_mutex);
-		return ;
-	}
-	pthread_mutex_unlock(&philo->table->death_mutex);
-	pthread_mutex_lock(&philo->table->print_mutex);
-	printf("%zu %zu %s\n", get_current_time() - philo->table->start_time_ms,
-		philo->id, str);
-	pthread_mutex_unlock(&philo->table->print_mutex);
 }
 
 void	*philo_simulation(void *data)
@@ -49,13 +34,13 @@ void	*philo_simulation(void *data)
 
 int	check_meals(t_table *table)
 {
-	pthread_mutex_lock(&table->eat_enough);
+	pthread_mutex_lock(&table->death_mutex);
 	if (table->all_ate_enough)
 	{
-		pthread_mutex_unlock(&table->eat_enough);
+		pthread_mutex_unlock(&table->death_mutex);
 		return (1);
 	}
-	pthread_mutex_unlock(&table->eat_enough);
+	pthread_mutex_unlock(&table->death_mutex);
 	return (0);
 }
 

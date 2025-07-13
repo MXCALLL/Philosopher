@@ -6,7 +6,7 @@
 /*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 06:57:56 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/12 16:19:10 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/13 20:25:48 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ typedef struct s_table
 	pthread_mutex_t		print_mutex;
 	pthread_mutex_t		death_mutex;
 	pthread_mutex_t		meal_mutex;
-	pthread_mutex_t		eat_enough;
 	int					someone_died;
 	int					all_ate_enough;
 	long				start_time_ms;
@@ -73,5 +72,7 @@ void		cleanup(t_table *table, t_philos *philos);
 int			check_philo_death(t_table *table);
 int			check_nbr_of_meals(t_table *table);
 int			create_threads(t_philos *philo, t_table *table);
+int			ft_isdigit(char *str);
+void		init_left_right_fork(size_t i, t_table *table, t_philos *philo);
 
 #endif

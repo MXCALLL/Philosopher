@@ -6,7 +6,7 @@
 /*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 07:21:52 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/11 17:26:07 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/13 20:13:46 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	check_posoverflow(int ac, char **av)
 {
 	int	i;
 
-	i = 0;
+	i = 1;
 	while (i < ac)
 	{
 		if (ft_atoi(av[i]) == -2)
@@ -66,6 +66,23 @@ int	check_posoverflow(int ac, char **av)
 	return (0);
 }
 
+int	check_digit(int ac, char **av)
+{
+	int		i;
+
+	i = 1;
+	while (i < ac)
+	{
+		if (ft_isdigit(av[i]))
+		{
+			ft_putstr("args are Not Valid");
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
 int	filter_input(int ac, char **av)
 {
 	if (ac != 5 && ac != 6)
@@ -73,6 +90,8 @@ int	filter_input(int ac, char **av)
 		ft_putstr("Error: nbr of args is not enough");
 		return (1);
 	}
+	if (check_digit(ac, av))
+		return (1);
 	if (check_posoverflow(ac, av))
 		return (1);
 	return (0);

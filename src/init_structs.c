@@ -6,7 +6,7 @@
 /*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 20:36:58 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/12 16:19:34 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/13 20:24:50 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ int	init_mutex_table(t_table *table)
 	if (pthread_mutex_init(&table->death_mutex, NULL))
 		return (1);
 	if (pthread_mutex_init(&table->meal_mutex, NULL))
-		return (1);
-	if (pthread_mutex_init(&table->eat_enough, NULL))
 		return (1);
 	return (0);
 }
@@ -111,8 +109,7 @@ t_philos	*init_philos(t_table *table)
 		philo[i].id = i + 1;
 		philo[i].meals_eaten = 0;
 		philo[i].last_meal_timing = get_current_time();
-		philo[i].left_fork = &table->forks[i];
-		philo[i].right_fork = &table->forks[(i + 1) % table->num_philos];
+		init_left_right_fork(i, table, philo);
 		philo[i].table = table;
 		i++;
 	}

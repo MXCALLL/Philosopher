@@ -6,7 +6,7 @@
 /*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 16:02:03 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/12 16:53:28 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/13 15:03:59 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,12 @@ int	check_nbr_of_meals(t_table *table)
 			i++;
 		}
 		if (satisfied_philos == table->num_philos)
-			return (table->all_ate_enough = 1, 1);
+		{
+			pthread_mutex_lock(&table->death_mutex);
+			table->all_ate_enough = 1;
+			pthread_mutex_unlock(&table->death_mutex);
+			return (1);
+		}
 	}
 	return (0);
 }
