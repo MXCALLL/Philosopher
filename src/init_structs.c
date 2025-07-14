@@ -6,7 +6,7 @@
 /*   By: muidbell <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 20:36:58 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/14 16:04:58 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/14 16:22:10 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,22 +66,6 @@ t_table	*init_table(t_table *table, int ac, char **av)
 	return (table);
 }
 
-void thread_leak_prevention(t_philos *philo, t_table *table, size_t failed_index)
-{
-	size_t	i;
-
-	pthread_mutex_lock(&table->death_mutex);
-	table->someone_died = 1;
-	pthread_mutex_unlock(&table->death_mutex);
-
-	i = 0;
-	while (i < failed_index)
-	{
-		pthread_join(philo[i].thread, NULL);
-		i++;
-	}
-}
-
 int	create_threads(t_philos *philo, t_table *table)
 {
 	pthread_t	monitor;
@@ -95,10 +79,8 @@ int	create_threads(t_philos *philo, t_table *table)
 		status = pthread_create(&philo[i].thread, NULL, philo_simulation,
 				&philo[i]);
 		if (status != 0)
-		{
-			thread_leak_prevention(philo, table, i);
-			return (ft_putstr("failed creating threads"), free(philo), 1);
-		}
+			return (leak_prevention(philo, table, i),
+				ft_putstr("failed creating threads"), free(philo), 1);
 		i++;
 	}
 	status = pthread_create(&monitor, NULL, monitor_routine, table);

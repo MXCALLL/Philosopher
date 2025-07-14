@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_helpers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
+/*   By: muidbell <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 20:23:53 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/13 20:25:16 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/14 16:23:53 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,19 @@ void	display_log(t_philos *philo, char *str)
 	printf("%zu %zu %s\n", get_current_time() - philo->table->start_time_ms,
 		philo->id, str);
 	pthread_mutex_unlock(&philo->table->print_mutex);
+}
+
+void	leak_prevention(t_philos *philo, t_table *table, size_t failed_i)
+{
+	size_t	i;
+
+	pthread_mutex_lock(&table->death_mutex);
+	table->someone_died = 1;
+	pthread_mutex_unlock(&table->death_mutex);
+	i = 0;
+	while (i < failed_i)
+	{
+		pthread_join(philo[i].thread, NULL);
+		i++;
+	}
 }

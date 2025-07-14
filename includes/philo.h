@@ -6,7 +6,7 @@
 /*   By: muidbell <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 06:57:56 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/14 12:39:17 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/14 16:23:19 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,6 @@ int			create_threads(t_philos *philo, t_table *table);
 int			ft_isdigit(char *str);
 void		init_left_right_fork(size_t i, t_table *table, t_philos *philo);
 int			check_death(t_table *table);
+void		leak_prevention(t_philos *philo, t_table *table, size_t failed_i);
 
 #endif
