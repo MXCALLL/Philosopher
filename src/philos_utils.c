@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philos_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
+/*   By: muidbell <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 17:07:13 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/13 20:25:12 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/14 12:54:45 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ void	*philo_simulation(void *data)
 
 	philo = (t_philos *)data;
 	if (philo->id % 2 == 1)
-		ft_usleep(philo->table->time_to_eat);
+		ft_usleep(1);
 	philo_routine(philo);
 	return (NULL);
 }
 
-int	check_meals(t_table *table)
+int	check_all_ate_enough_meals(t_table *table)
 {
 	pthread_mutex_lock(&table->death_mutex);
 	if (table->all_ate_enough)
@@ -60,7 +60,7 @@ void	philo_routine(t_philos *philo)
 			return ;
 		taking_fork(philo);
 		eating(philo);
-		if (check_meals(philo->table))
+		if (check_all_ate_enough_meals(philo->table))
 			break ;
 		sleeping(philo);
 		thinking(philo);

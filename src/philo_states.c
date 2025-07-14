@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_states.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
+/*   By: muidbell <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 10:13:12 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/13 19:46:53 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/14 12:53:52 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	taking_fork(t_philos *philo)
 	}
 	else
 	{
-		ft_usleep(1);
 		pthread_mutex_lock(philo->right_fork);
 		display_log(philo, "has taken a fork");
 		pthread_mutex_lock(philo->left_fork);
@@ -33,12 +32,20 @@ void	taking_fork(t_philos *philo)
 
 void	eating(t_philos *philo)
 {
+	long	curr;
+
+	curr = get_current_time();
 	display_log(philo, "is eating");
 	pthread_mutex_lock(&philo->table->meal_mutex);
 	philo->last_meal_timing = get_current_time();
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->table->meal_mutex);
-	ft_usleep(philo->table->time_to_eat);
+	while (check_death(philo->table))
+	{
+		if ((get_current_time() - curr) >= (long)philo->table->time_to_eat)
+			break ;
+		usleep(50);
+	}
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
 }
@@ -65,11 +72,12 @@ void	sleeping(t_philos *philo)
 	{
 		if ((get_current_time() - curr) >= (long)philo->table->time_to_sleep)
 			return ;
-		ft_usleep(50 / 1000);
+		usleep(50);
 	}
 }
 
 void	thinking(t_philos *philo)
 {
 	display_log(philo, "is thinking");
+	usleep(200);
 }

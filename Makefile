@@ -5,7 +5,7 @@ SRCS = src/main.c src/parsing.c src/init_structs.c src/philos_utils.c \
 
 HEADER = includes/philo.h
 OBJS = ${SRCS:.c=.o}
-CC = cc -fsanitize=address
+CC = cc
 FLAGS = -Wall -Wextra -Werror
 
 all: ${NAME}

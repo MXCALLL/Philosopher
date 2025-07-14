@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor_routine.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
+/*   By: muidbell <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 16:02:03 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/13 15:03:59 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/14 12:31:51 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	*monitor_routine(void *data)
 			return (NULL);
 		if (check_philo_death(table))
 			return (NULL);
-		ft_usleep(1);
+		usleep(50);
 	}
 	return (NULL);
 }
@@ -37,7 +37,7 @@ int	check_philo_death(t_table *table)
 	{
 		pthread_mutex_lock(&table->meal_mutex);
 		if (get_current_time()
-			- table->philos[i].last_meal_timing > (long)table->time_to_die)
+			- table->philos[i].last_meal_timing >= (long)table->time_to_die)
 		{
 			pthread_mutex_unlock(&table->meal_mutex);
 			pthread_mutex_lock(&table->death_mutex);
