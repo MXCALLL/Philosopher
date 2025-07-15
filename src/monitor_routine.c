@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor_routine.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muidbell <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 16:02:03 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/14 12:31:51 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/15 16:37:11 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ int	check_philo_death(t_table *table)
 			- table->philos[i].last_meal_timing >= (long)table->time_to_die)
 		{
 			pthread_mutex_unlock(&table->meal_mutex);
+			pthread_mutex_lock(&table->print_mutex);
 			pthread_mutex_lock(&table->death_mutex);
 			table->someone_died = 1;
 			pthread_mutex_unlock(&table->death_mutex);
-			pthread_mutex_lock(&table->print_mutex);
 			printf("%zu %zu died\n", get_current_time() - table->start_time_ms,
 				table->philos[i].id);
 			pthread_mutex_unlock(&table->print_mutex);

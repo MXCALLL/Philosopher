@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_helpers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muidbell <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 20:23:53 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/14 16:23:53 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/15 17:44:18 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,15 @@ void	init_left_right_fork(size_t i, t_table *table, t_philos *philo)
 
 void	display_log(t_philos *philo, char *str)
 {
+	pthread_mutex_lock(&philo->table->print_mutex);
 	pthread_mutex_lock(&philo->table->death_mutex);
 	if (philo->table->someone_died)
 	{
 		pthread_mutex_unlock(&philo->table->death_mutex);
+		pthread_mutex_unlock(&philo->table->print_mutex);
 		return ;
 	}
 	pthread_mutex_unlock(&philo->table->death_mutex);
-	pthread_mutex_lock(&philo->table->print_mutex);
 	printf("%zu %zu %s\n", get_current_time() - philo->table->start_time_ms,
 		philo->id, str);
 	pthread_mutex_unlock(&philo->table->print_mutex);
@@ -54,4 +55,42 @@ void	leak_prevention(t_philos *philo, t_table *table, size_t failed_i)
 		pthread_join(philo[i].thread, NULL);
 		i++;
 	}
+}
+
+int	create_threads(t_philos *philo, t_table *table)
+{
+	pthread_t	monitor;
+	int			status;
+	size_t		i;
+
+	status = 0;
+	i = 0;
+	while (i < table->num_philos)
+	{
+		status = pthread_create(&philo[i].thread, NULL, philo_simulation,
+				&philo[i]);
+		if (status != 0)
+			return (leak_prevention(philo, table, i),
+				ft_putstr("failed creating threads"), 1);
+		i++;
+	}
+	status = pthread_create(&monitor, NULL, monitor_routine, table);
+	if (status != 0)
+		return (ft_putstr("failed creating threads"), 1);
+	if (pthread_join(monitor, NULL) != 0)
+		return (ft_putstr("monitor join failed"), 1);
+	i = 0;
+	while (i < table->num_philos)
+		if (pthread_join(philo[i++].thread, NULL) != 0)
+			return (ft_putstr("pthread join failed"), 1);
+	return (0);
+}
+
+long	get_current_time(void)
+{
+	struct timeval	start;
+
+	if (gettimeofday(&start, NULL))
+		ft_putstr("get time failed");
+	return (start.tv_sec * 1000 + start.tv_usec / 1000);
 }

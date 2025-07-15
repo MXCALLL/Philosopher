@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muidbell <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 06:57:56 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/14 16:23:19 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/15 17:37:46 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void		sleeping(t_philos *philo);
 void		thinking(t_philos *philo);
 void		*monitor_routine(void *data);
 void		cleanup(t_table *table, t_philos *philos);
+void		cleanup_mutex_init(t_table *table, size_t forks_count);
 int			check_philo_death(t_table *table);
 int			check_nbr_of_meals(t_table *table);
 int			create_threads(t_philos *philo, t_table *table);

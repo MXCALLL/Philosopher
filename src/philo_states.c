@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_states.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muidbell <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 10:13:12 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/14 12:53:52 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/15 16:53:18 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,14 @@
 
 void	taking_fork(t_philos *philo)
 {
+	if (philo->table->num_philos == 1)
+	{
+		pthread_mutex_lock(philo->left_fork);
+		display_log(philo, "has taken a fork");
+		ft_usleep(philo->table->time_to_die);
+		pthread_mutex_unlock(philo->left_fork);
+		return ;
+	}
 	if (philo->id % 2)
 	{
 		pthread_mutex_lock(philo->left_fork);
@@ -34,6 +42,8 @@ void	eating(t_philos *philo)
 {
 	long	curr;
 
+	if (philo->table->num_philos == 1)
+		return ;
 	curr = get_current_time();
 	display_log(philo, "is eating");
 	pthread_mutex_lock(&philo->table->meal_mutex);

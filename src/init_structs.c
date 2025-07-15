@@ -3,22 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   init_structs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muidbell <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 20:36:58 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/14 16:22:10 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/15 18:01:09 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-long	get_current_time(void)
+void	cleanup_mutex_init(t_table *table, size_t forks_count)
 {
-	struct timeval	start;
+	size_t	i;
 
-	if (gettimeofday(&start, NULL))
-		ft_putstr("get time failed");
-	return (start.tv_sec * 1000 + start.tv_usec / 1000);
+	if (table && table->forks)
+	{
+		i = 0;
+		while (i < forks_count)
+			pthread_mutex_destroy(&table->forks[i++]);
+	}
 }
 
 int	init_mutex_table(t_table *table)
@@ -28,15 +31,23 @@ int	init_mutex_table(t_table *table)
 	i = 0;
 	while (i < table->num_philos)
 	{
-		if (pthread_mutex_init(&table->forks[i++], NULL))
-			return (1);
+		if (pthread_mutex_init(&table->forks[i], NULL))
+			return (cleanup_mutex_init(table, i), 1);
+		i++;
 	}
 	if (pthread_mutex_init(&table->print_mutex, NULL))
-		return (1);
+		return (cleanup_mutex_init(table, i), 1);
 	if (pthread_mutex_init(&table->death_mutex, NULL))
-		return (1);
+	{
+		cleanup_mutex_init(table, i);
+		return (pthread_mutex_destroy(&table->print_mutex), 1);
+	}
 	if (pthread_mutex_init(&table->meal_mutex, NULL))
-		return (1);
+	{
+		cleanup_mutex_init(table, i);
+		pthread_mutex_destroy(&table->print_mutex);
+		return (pthread_mutex_destroy(&table->death_mutex), 1);
+	}
 	return (0);
 }
 
@@ -61,38 +72,9 @@ t_table	*init_table(t_table *table, int ac, char **av)
 	if (!table->forks)
 		return (free(table), ft_putstr("malloc forks fail"), NULL);
 	if (init_mutex_table(table))
-		return (NULL);
+		return (free(table->forks), free(table), NULL);
 	table->start_time_ms = get_current_time();
 	return (table);
-}
-
-int	create_threads(t_philos *philo, t_table *table)
-{
-	pthread_t	monitor;
-	int			status;
-	size_t		i;
-
-	status = 0;
-	i = 0;
-	while (i < table->num_philos)
-	{
-		status = pthread_create(&philo[i].thread, NULL, philo_simulation,
-				&philo[i]);
-		if (status != 0)
-			return (leak_prevention(philo, table, i),
-				ft_putstr("failed creating threads"), free(philo), 1);
-		i++;
-	}
-	status = pthread_create(&monitor, NULL, monitor_routine, table);
-	if (status != 0)
-		return (ft_putstr("failed creating threads"), free(philo), 1);
-	if (pthread_join(monitor, NULL) != 0)
-		return (ft_putstr("monitor join failed"), 1);
-	i = 0;
-	while (i < table->num_philos)
-		if (pthread_join(philo[i++].thread, NULL) != 0)
-			return (ft_putstr("pthread join failed"), 1);
-	return (0);
 }
 
 t_philos	*init_philos(t_table *table)
