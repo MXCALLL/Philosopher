@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
+/*   By: muidbell <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 07:21:52 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/13 20:13:46 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/18 10:43:40 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,6 @@ int	ft_error(int nbr, int index)
 		if (!nbr)
 		{
 			ft_putstr("Error: Invalid Time Number");
-			return (1);
-		}
-	}
-	else if (index == 5)
-	{
-		if (!nbr)
-		{
-			ft_putstr("Error: Invalid number of meals per philosopher");
 			return (1);
 		}
 	}

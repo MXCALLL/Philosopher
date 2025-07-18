@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
+/*   By: muidbell <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 20:08:39 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/13 20:10:50 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/18 11:21:12 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,25 @@ int	ft_isdigit(char *str)
 {
 	int	i;
 	int	flag;
+	int	digit_found;
 
 	i = 0;
 	flag = 0;
-	while (str[i])
+	digit_found = 0;
+
+	while (str[i] && ft_whitespace(str[i]))
+		i++;
+	if (str[i] == '+')
+		i++;
+	while (str[i] && (str[i] >= '0' && str[i] <= '9'))
 	{
-		if (ft_whitespace(str[i]))
-		{
-			i++;
-			continue ;
-		}
-		if (!(str[i] >= '0' && str[i] <= '9'))
-			flag = 1;
+		digit_found = 1;
 		i++;
 	}
-	if (flag)
-		return (1);
-	return (0);
+	while (str[i] && ft_whitespace(str[i]))
+		i++;
+
+	if (str[i] || !digit_found)
+		flag = 1;
+	return (flag);
 }
