@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_helpers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muidbell <muidbell@student.42.fr>          +#+  +:+       +#+        */
+/*   By: muidbell <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 20:23:53 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/15 17:44:18 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/18 10:22:18 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,23 +60,21 @@ void	leak_prevention(t_philos *philo, t_table *table, size_t failed_i)
 int	create_threads(t_philos *philo, t_table *table)
 {
 	pthread_t	monitor;
-	int			status;
 	size_t		i;
 
-	status = 0;
 	i = 0;
 	while (i < table->num_philos)
 	{
-		status = pthread_create(&philo[i].thread, NULL, philo_simulation,
-				&philo[i]);
-		if (status != 0)
+		if (pthread_create(&philo[i].thread, NULL, philo_simulation,
+				&philo[i]) != 0)
 			return (leak_prevention(philo, table, i),
 				ft_putstr("failed creating threads"), 1);
 		i++;
 	}
-	status = pthread_create(&monitor, NULL, monitor_routine, table);
-	if (status != 0)
-		return (ft_putstr("failed creating threads"), 1);
+	if (pthread_create(&monitor, NULL, monitor_routine,
+			table) != 0)
+		return (leak_prevention(philo, table, table->num_philos),
+			ft_putstr("failed creating threads"), 1);
 	if (pthread_join(monitor, NULL) != 0)
 		return (ft_putstr("monitor join failed"), 1);
 	i = 0;
