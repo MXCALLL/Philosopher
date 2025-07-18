@@ -6,7 +6,7 @@
 /*   By: muidbell <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 20:08:39 by muidbell          #+#    #+#             */
-/*   Updated: 2025/07/18 11:21:12 by muidbell         ###   ########.fr       */
+/*   Updated: 2025/07/18 11:26:50 by muidbell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int	ft_isdigit(char *str)
 	i = 0;
 	flag = 0;
 	digit_found = 0;
-
 	while (str[i] && ft_whitespace(str[i]))
 		i++;
 	if (str[i] == '+')
@@ -38,7 +37,6 @@ int	ft_isdigit(char *str)
 	}
 	while (str[i] && ft_whitespace(str[i]))
 		i++;
-
 	if (str[i] || !digit_found)
 		flag = 1;
 	return (flag);
